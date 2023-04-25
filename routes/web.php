@@ -45,6 +45,7 @@ Route::controller(PostController::class)->group(function () {
 });
 
 Route::post('/{user:username}/posts/{post}', [ComentarioController::class, 'store'])->name('comentarios.store');
+Route::delete('/{user:username}/posts/{post}', [ComentarioController::class, 'destroy'])->name('comentario.destroy');
 
 Route::post('/imagenes', [ImageController::class, 'store'])->name('imagenes.store');
 

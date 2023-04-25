@@ -75,7 +75,8 @@ class PostController extends Controller
   {
     return view('posts.show', [
       'post' => $post,
-      'user' => $user
+      'user' => $user,
+      'comentarios_reversos' => $post->comentarios()->latest()->paginate(20)
     ]);
   }
 

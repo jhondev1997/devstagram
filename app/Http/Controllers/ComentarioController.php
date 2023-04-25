@@ -23,6 +23,13 @@ class ComentarioController extends Controller
       'comentario' => $request->comentario
     ]);
 
-    return back()->with('mensaje', 'Comentario realizado correctamente');
+    return back()->with('mensaje-creado', 'Comentario realizado correctamente');
+  }
+
+  public function destroy(User $user, Post $post, Comentario $comentario)
+  {
+    $post->comentarios()->where('user_id', $user->id)->delete();
+
+    return back()->with('mensaje-borrado', 'Comentario borrado correctamente');
   }
 }

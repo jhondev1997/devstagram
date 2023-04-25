@@ -41,6 +41,15 @@
         {{-- <p class="font-bold">{{ $post->likes->count()}}
           <span class="font-normal"> Likes</span>
         </p> --}}
+        @if (!auth()->user())
+          <svg xmlns="http://www.w3.org/2000/svg" fill="white" viewBox="0 0 24 24" stroke-width="0.2" stroke="currentColor" class="w-6 h-6 border-white">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+          </svg>
+          <p class="font-bold">{{ $post->likes->count()}}
+
+            <span class="font-normal"> Likes</span>
+          </p>
+        @endif
       </div>
 
       <div>
@@ -68,9 +77,15 @@
         @auth
           <p class="text-xl font-bold text-center mb-4">Agrega un nuevo comentario</p>
 
-          @if (session('mensaje'))
+          @if (session('mensaje-creado'))
             <div class="bg-green-500 p-2 rounded-lg mb-6 text-white text-center uppercase font-bold">
-              {{session('mensaje')}}
+              {{session('mensaje-creado')}}
+            </div>
+          @endif
+
+          @if (session('mensaje-borrado'))
+            <div class="bg-red-500 p-2 rounded-lg mb-6 text-white text-center uppercase font-bold">
+              {{session('mensaje-borrado')}}
             </div>
           @endif
 
@@ -105,12 +120,27 @@
         @endauth
 
         <div class="bg-white shadow mb-5 max-h96 overflow-y-scroll mt-10">
-          @if ($post->comentarios->count())
-            @foreach ($post->comentarios as $comentario)
+          @if ($comentarios_reversos->count())
+            @foreach ($comentarios_reversos as $comentario)
               <div class="p-5 border-gray-300 border-b">
-                <a class="font-bold" href="{{ route('posts.index', $comentario->user)}}">
-                  {{$comentario->user->username}}
-                </a>
+                <header class="flex justify-between">
+                  <a class="font-bold" href="{{ route('posts.index', $comentario->user)}}">
+                    {{$comentario->user->username}}
+                  </a>
+
+                  @auth
+                    @if ($comentario->user_id === auth()->user()->id)
+                      <form class="text-xs" action="{{route('comentario.destroy', ['user' => $user, 'comentario' => $comentario, 'post' => $post])}}" method="POST">
+                        @method('DELETE')
+                        @csrf
+                        <input type="submit"
+                          value="Eliminar comentario"
+                          class="text-blue-500 cursor-pointer"
+                        />
+                      </form>
+                    @endif
+                  @endauth
+                </header>
                 <p>{{$comentario->comentario}}</p>
                 <p class="text-sm text-gray-500">{{$comentario->created_at->diffForHumans()}}</p>
               </div>
