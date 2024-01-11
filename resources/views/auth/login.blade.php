@@ -5,7 +5,7 @@
 @section('content')
   <div class="md:flex justify-center md:gap-8 md:items-center p-5">
     <div class="md:w-6/12">
-      <img src="{{ asset('img/login.jpg')}}"
+      <img src="{{ asset('img/bg-image-programer-02.jpg')}}"
         alt="img"
       />
     </div>
