@@ -125,6 +125,11 @@
               <div class="p-5 border-gray-300 border-b">
                 <header class="flex justify-between">
                   <a class="font-bold" href="{{ route('posts.index', $comentario->user)}}">
+                    <img src="{{$comentario->user->imagen ?
+                      asset('perfiles') . '/' . $comentario->user->imagen :
+                      asset('img/usuario.svg')}}"
+                      class="w-10 h-10 rounded-full"
+                      alt="">
                     {{$comentario->user->username}}
                   </a>
 
